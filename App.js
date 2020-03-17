@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Clipboard } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Clipboard } from 'react-native';
 import { render } from 'react-dom';
 
 export default class App extends React.Component  {
@@ -26,11 +26,11 @@ export default class App extends React.Component  {
         return;
       }
 
-      fetch('https://reactnative.dev/movies.json')
+      fetch('http://52.141.7.91:8200/phonetic/' + this.state.todoText)
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson);
-        this.setState({bodyText: JSON.stringify(responseJson['title']), translate: '복사'});
+        this.setState({bodyText: JSON.stringify(responseJson['phon_word']), translate: '복사'});
       })
       .catch((error) =>{
         console.error(error);
@@ -66,9 +66,15 @@ export default class App extends React.Component  {
           </TouchableOpacity>
         </View>
         <View style={styles.bottomLayout}>
+        <View style={styles.SectionStyle}>
+          <Image style={styles.ImageStyle} source={require('./assets/magnify.png')}/>
           <TextInput style={styles.inputText}
+            placeholder="Enter Here"
             value={this.state.todoText}
             onChangeText={this.changeText}/>
+          
+        </View>  
+          
           <Text style={styles.resText}>{this.state.bodyText}</Text>
         </View>
 
@@ -89,16 +95,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'stretch'
+    alignItems: 'stretch',
+    backgroundColor: '#f4f4f4'
   },
   topLayout: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'gray'
+    backgroundColor: '#d32421'
   },
   midLayout: {
-    flex: 1,
+    flex: 0.6,
     flexDirection: 'row'
   },
   btn1: {
@@ -106,24 +113,47 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    marginRight: 0.5,
-    backgroundColor: 'skyblue'
+    marginRight: 1,
+    marginTop: 10,
+    backgroundColor: '#aaaba3'
   },
   btn2: {
     width: "50%",
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    marginLeft: 0.5,
-    backgroundColor: "skyblue"
+    marginLeft: 1,
+    marginTop: 10,
+    backgroundColor: "#42a701"
   },
   bottomLayout: {
     flex: 5,
     alignItems: 'center',
     backgroundColor: 'white'
   },
+  SectionStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderWidth: 3,
+    borderColor: 'gray',
+    height: 70,
+    borderRadius: 15,
+    margin: 50,
+    width: "90%"
+  },
+  ImageStyle: {
+    padding: 10,
+    margin: 5,
+    height: 25,
+    width: 25,
+    resizeMode: 'stretch',
+    alignItems: 'center',
+  },
   inputText: {
-    width: "90%", height: 60, borderColor: 'gray', borderWidth: 2, borderRadius: 15, marginTop: 50, fontSize: 25
+    flex: 1,
+    fontSize: 25
   },
   resText: {
     marginTop: 20, fontSize: 20
